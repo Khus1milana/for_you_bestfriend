@@ -1,169 +1,119 @@
-var book = $('.bk-book');
-var bookPage = book.children('div.bk-page');
-var viewBookLink = book.find('.bk-bookview');
-var viewBackLink = book.find('.bk-bookback');
-var changeColorLink = book.find('.change-color');
-var colorContainers = book.find('.color-container');
+$(function() {
+  var book = $('.bk-book');
+  var bookBlock = $('.bb-bookblock');
+  
+  // Создаем 3D состояния книги
+  var bookDefault = function() {
+    book.data({ opened: false, flip: false })
+        .removeClass('bk-viewback bk-viewinside')
+        .addClass('bk-bookdefault');
+  };
+  
+  var bookInside = function() {
+    book.data({ opened: true, flip: false })
+        .removeClass('bk-viewback bk-bookdefault')
+        .addClass('bk-viewinside');
+  };
+  
+  var bookBack = function() {
+    book.data({ opened: false, flip: true })
+        .removeClass('bk-viewinside bk-bookdefault')
+        .addClass('bk-viewback');
+  };
 
-var bookDefault = function(){
-  book.data({ opened : false, flip : false })
-      .removeClass('bk-viewback bk-viewinside')
-      .addClass('bk-bookdefault');
-};
-var bookBack = function(){
-  book.data({ opened : false, flip : true })
-      .removeClass('bk-viewinside bk-bookdefault')
-      .addClass('bk-viewback');
-};
-var bookInside = function(){
-  book.data({ opened : true, flip : false })
-      .removeClass('bk-viewback bk-bookdefault')
-      .addClass( 'bk-viewinside');
-};
+  // Инициализируем книгу в закрытом виде
+  bookDefault();
 
-bookDefault();
+  // Клонируем BookBlock для задней обложки (нужно для корректной работы 3D библиотеки)
+  var backCover = bookBlock.parents('.bk-book').find('.bk-cover-back');
+  var backCoverBookBlock = bookBlock.clone();
+  backCoverBookBlock.appendTo(backCover);
 
-viewBackLink.on('click', function(){
-  if(book.data('flip')){
-    bookDefault();
-  }else{
-    bookBack();
-  }
-  return false;
-});
+  var bookBlockFirst = function() {
+    bookBlock.bookblock('first');
+    backCoverBookBlock.bookblock('first');
+  };
+  
+  var bookBlockLast = function() {
+    bookBlock.bookblock('last');
+    backCoverBookBlock.bookblock('last');
+  };
 
-viewBookLink.on('click', function(){
-  bookInside();
-  return false;
-});
+  var bookBlockLastIndex = bookBlock.children().length - 1;
 
-//Detect click outside book
-$('html').on( 'click', function(event) {
-  if ($(event.target).parents('.bk-book').length == 0){
-    bookDefault();
-    if (!colorContainers.hasClass('hidden'))
-      changeColorLink.click();
-  }
-  return false;
-});
-
-//Change color
-var colorLabel = (function(){
-  var labels = ['Change Color', '❤ this color']
-  return function(){
-    labels.push(labels.shift());
-    return labels[0];
-  }
-})();
-changeColorLink.click(function(){
-  colorContainers.toggleClass('hidden');
-  $(this).text(colorLabel());
-});
-
-var css = $("<style type='text/css'></style>").appendTo('head');
-
-colorContainers.find('.color-square').click(function(){
-  var color = $(this).attr('class').match(/background-color-([a-f0-9]{6})/i)[1];
-  css.text('.highlight { color: #' + color + '; }');
-});
-
-//Bookblock clone and setup
-var bookBlock = $('.bb-bookblock');
-var backCover = bookBlock.parents('.bk-book').find('.bk-cover-back');
-var backCoverBookBlock = bookBlock.clone();
-backCoverBookBlock.appendTo(backCover);
-
-var bookBlockFirst = function(){
-  bookBlock.bookblock('first');
-  backCoverBookBlock.bookblock('first');
-}
-var bookBlockLast = function(){
-  bookBlock.bookblock('last');
-  backCoverBookBlock.bookblock('last');
-}
-
-var bookBlockLastIndex = bookBlock.children().length-1;
-var bookBlockNext = function(){
-  if (book.data('flip'))
-    return bookDefault();
-  if(!book.data('opened'))
-    return bookInside();
-  if (bookBlock.find('.bb-item:visible').index()===bookBlockLastIndex)
-    return bookBack() + bookBlockFirst();
-  bookBlock.bookblock('next');
-  backCoverBookBlock.bookblock('next');
-}
-var bookBlockPrev = function(){
-  if (book.data('flip'))
-    return bookBlockLast()+bookInside();
-  if(!book.data('opened'))
-    return bookBack();
-  if (bookBlock.find('.bb-item:visible').index()===0)
-    return bookDefault();
-  bookBlock.bookblock('prev');
-  backCoverBookBlock.bookblock('prev');
-}
-
-bookBlock.children().add(backCoverBookBlock.children()).on({
-  'swipeleft': function(event) {
-    bookBlockPrev();
-    return false;
-  },
-  'swiperight': function(event) {
-    bookBlockPrev();
-    return false;
-  },
-  'click': function(event){
-    if ($(event.target).parents('.bk-cover-back').length == 0)
-      bookBlockNext();
-    else
-      bookBlockPrev();
-    return false;
-  }
-});
-
-bookBlock.bookblock({
-  speed: 800,
-  shadow: false
-});
-backCoverBookBlock.bookblock({
-  speed: 800,
-  shadow: false
-});
-
-var throttleFunc = function(func, limit, limitQueue){
-  var lastTime = + new Date;
-  var queued = 0;
-  return function throttledFunc(){
-    var now = + new Date;
-    var args = Array.prototype.slice.call(arguments);
-    if (now - lastTime > limit){
-      func.apply(this, args);
-      lastTime = + new Date;
-    }else{
-      var boundFunc = throttledFunc.bind.apply(throttledFunc, [this].concat(args));
-      queued++;
-      if (queued<limitQueue)
-        window.setTimeout(boundFunc, lastTime+limit-now);
+  // Логика перелистывания ВПЕРЕД
+  var bookBlockNext = function() {
+    if (book.data('flip')) {
+      return bookDefault();
     }
-  }
-}
+    if (!book.data('opened')) {
+      return bookInside();
+    }
+    // Если мы на последней странице — закрываем книгу и показываем задник
+    if (bookBlock.find('.bb-item:visible').index() === bookBlockLastIndex) {
+      bookBack();
+      bookBlockFirst();
+      return;
+    }
+    bookBlock.bookblock('next');
+    backCoverBookBlock.bookblock('next');
+  };
 
-$(document).keydown(throttleFunc(function(e) {
-  var keyCode = e.keyCode || e.which,
-    arrow = {
-      left : 37,
-      up : 38,
-      right : 39,
-      down : 40
-    };
+  // Логика перелистывания НАЗАД
+  var bookBlockPrev = function() {
+    if (book.data('flip')) {
+      bookBlockLast();
+      bookInside();
+      return;
+    }
+    if (!book.data('opened')) {
+      return bookBack();
+    }
+    if (bookBlock.find('.bb-item:visible').index() === 0) {
+      return bookDefault();
+    }
+    bookBlock.bookblock('prev');
+    backCoverBookBlock.bookblock('prev');
+  };
 
-  switch (keyCode) {
-    case arrow.left:
+  // Инициализация плагина BookBlock
+  bookBlock.bookblock({
+    speed: 700,
+    shadow: true
+  });
+  backCoverBookBlock.bookblock({
+    speed: 700,
+    shadow: false
+  });
+
+  // ГЛАВНОЕ: Клик по самой обложке или страницам для автопереворота
+  book.on('click', function(event) {
+    // Предотвращаем баги, если кликнули по текстовым ссылкам внутри (если они будут)
+    if ($(event.target).is('a')) return true;
+
+    // Если кликнули по задней обложке — листаем назад, иначе — вперед
+    if ($(event.target).parents('.bk-cover-back').length > 0) {
       bookBlockPrev();
-      break;
-    case arrow.right:
+    } else {
       bookBlockNext();
-      break;
-  }
-}, 500, 2));
+    }
+    return false;
+  });
+
+  // Закрывать журнал, если кликнули в любое пустое место экрана
+  $('html').on('click', function(event) {
+    if ($(event.target).parents('.bk-book').length === 0) {
+      bookDefault();
+    }
+  });
+
+  // Управление стрелочками на клавиатуре (опционально, пусть будет)
+  $(document).keydown(function(e) {
+    var keyCode = e.keyCode || e.which;
+    if (keyCode === 37) { // Стрелка влево
+      bookBlockPrev();
+    } else if (keyCode === 39) { // Стрелка вправо
+      bookBlockNext();
+    }
+  });
+});
