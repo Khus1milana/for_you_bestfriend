@@ -1,5 +1,4 @@
-@import url(https://fonts.googleapis.com/css?family=Lato:400,700|Open+Sans:400,800);
-
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
 
 html, body { height: 100%; }
 
@@ -13,24 +12,18 @@ html, body { height: 100%; }
   margin: 0;
 }
 
-/* Clearfix hack by Nicolas Gallagher: http://nicolasgallagher.com/micro-clearfix-hack/ */
+/* Clearfix hack */
 .clearfix:before,
 .clearfix:after {
     content: " ";
     display: table;
 }
-
-.clearfix:after {
-    clear: both;
-}
-
-.clearfix {
-    *zoom: 1;
-}
+.clearfix:after { clear: both; }
+.clearfix { *zoom: 1; }
 
 body {
-    font-family: 'Lato', Calibri, Arial, sans-serif;
-    background: #333;
+    font-family: 'Montserrat', sans-serif;
+    background: #111; /* Сделаем фон чуть темнее для атмосферы */
     font-weight: 400;
     font-size: 15px;
     color: #fff;
@@ -75,9 +68,9 @@ a {
   right: 0;
 }
 
-.hidden {
-  display:none;
-}
+.hidden { display:none; }
+
+/* 3D Книга - Базовые контейнеры */
 .bk-book {
 	position: absolute;
 	width: 100%;
@@ -85,9 +78,9 @@ a {
 	-webkit-transform-style: preserve-3d;
 	-moz-transform-style: preserve-3d;
 	transform-style: preserve-3d;
-	-webkit-transition: -webkit-transform .5s, margin .5s;
-	-moz-transition: -moz-transform .5s, margin .5s;
-	transition: transform .5s, margin .5s;
+	-webkit-transition: -webkit-transform .6s ease-in-out, margin .6s ease-in-out;
+	-moz-transition: -moz-transform .6s ease-in-out, margin .6s ease-in-out;
+	transition: transform .6s ease-in-out, margin .6s ease-in-out;
 }
 
 .bk-book > div,
@@ -103,9 +96,9 @@ a {
 	-webkit-transform-origin: 0% 50%;
 	-moz-transform-origin: 0% 50%;
 	transform-origin: 0% 50%;
-	-webkit-transition: -webkit-transform .5s;
-	-moz-transition: -moz-transform .5s;
-	transition: transform .5s;
+	-webkit-transition: -webkit-transform .6s ease-in-out;
+	-moz-transition: -moz-transform .6s ease-in-out;
+	transition: transform .6s ease-in-out;
 	-webkit-transform: translate3d(0,0,20px);
 	-moz-transform: translate3d(0,0,20px);
 	transform: translate3d(0,0,20px);
@@ -128,15 +121,13 @@ a {
 	display: none;
 	width: 100%;
 	height: 100%;
-  overflow: hidden;
+    overflow: hidden;
 	-webkit-backface-visibility: hidden;
 	-moz-backface-visibility: hidden;
 	backface-visibility: hidden;
 	z-index: 9;
 }
-.bk-page > div{
-  margin-left: -100%;
-}
+.bk-page > div{ margin-left: -100%; }
 
 .bk-front,
 .bk-back,
@@ -168,11 +159,11 @@ a {
 }
 
 .bk-cover-back {
-	background-color: #000;
+	background-color: #1a1a1a;
 	-webkit-transform: rotate3d(0,1,0,-180deg);
 	-moz-transform: rotate3d(0,1,0,-180deg);
 	transform: rotate3d(0,1,0,-180deg);
-  overflow: hidden;
+    overflow: hidden;
 }
 
 .bk-right {
@@ -205,11 +196,8 @@ a {
 	transform: rotate3d(1,0,0,-90deg) translate3d(0,0,390px);
 }
 
-/* Transform classes */
-
-.bk-viewinside {
-  margin-left: 47%;
-}
+/* Позиция при просмотре изнутри */
+.bk-viewinside { margin-left: 47%; }
 
 .bk-viewinside .bk-front {
 	-webkit-transform: translate3d(0,0,20px) rotate3d(0,1,0,-160deg);
@@ -229,12 +217,9 @@ a {
 	transform: translate3d(0,0,0px) rotate3d(0,1,0,180deg);
 }
 
-.bk-viewback .bk-back {
-	z-index: 10;
-}
+.bk-viewback .bk-back { z-index: 10; }
 
-/* Main colors and content */
-
+/* Корешок и тени */
 .bk-front:after {
   content: '';
   position: absolute;
@@ -248,233 +233,229 @@ a {
 	content: '';
 	position: absolute;
 	top: 0;
-	left: 10px;
+	left: 0;
 	bottom: 0;
-	width: 3px;
-	background: rgba(0,0,0,0.06);
+	width: 5px;
+	background: linear-gradient(to right, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0) 100%);
+	z-index: 15;
 }
 
-.bk-back:after {
-	left: auto;
-	right: 10px;
-}
-
-/* Individual style */
-
+/* Цвета граней 3D книги */
 .bk-book .bk-front > div,
 .bk-book .bk-back,
 .bk-book .bk-left,
 .bk-book .bk-front:after {
-	background-color: #241F20;
+	background-color: #1c1819;
 }
 
-.bk-book .bk-cover{
-  display: table;
-  width:100%;
-  height:100%;
+/* ==========================================
+   СТИЛИ ОБЛОЖКИ ЖУРНАЛА (ТВОЙ ДИЗАЙН)
+   ========================================== */
+.magazine-cover {
+  width: 100%;
+  height: 100%;
+  /* Загружаем картинку фоном, настраиваем тёплый фильтр */
+  background: linear-gradient(rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.35)), url('image_28d19f.jpg') center/cover no-repeat;
+  position: relative;
   overflow: hidden;
-  cursor: default;
-}
-.bk-book .bk-cover .color-container{
-  position:absolute;
-  width:100%;
-  height:10%;
-  bottom:0;
-  left:0;
-  -webkit-transition: top 0.5s, bottom 0.5s;
-  -moz-transition: top 0.5s, bottom 0.5s;
-  transition: top 0.5s, bottom 0.5s;
   cursor: pointer;
 }
-.bk-book .bk-cover .color-container.before{
-  top:0;
-}
-.bk-book .bk-cover .color-container.hidden{
-  bottom: -10%;
-  display:block;
-}
-.bk-book .bk-cover .color-container.before.hidden{
-  top: -10%;
-  display:block;
-}
-.bk-book .bk-cover .color-square{
-  width: 10%;
+
+/* Сетка поверх обложки */
+.magazine-grid {
+  display: grid;
+  grid-template-rows: auto auto auto 1fr auto;
   height: 100%;
-  display: block;
-  float: left;
-  margin: 0;
-  padding: 0;
+  padding: 25px;
+  box-sizing: border-box;
 }
 
-.bk-book .bk-cover .bk-title{
-  display: table-cell;
-  vertical-align:middle;
-  color: #fff;
+/* Главный заголовок BIRTHDAY */
+.mag-main-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 4.8em;
+  font-weight: 400;
+  letter-spacing: -2px;
+  text-align: center;
+  color: #ffffff;
+  line-height: 0.9em;
   text-transform: uppercase;
+  margin-top: 5px;
 }
-.bk-book .bk-cover .bk-title div{
-  display:block;
-  width: 343px;
-  margin:auto;
+
+/* Мета-блок (Дата и Спецвыпуск) */
+.mag-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8em;
+  font-weight: 400;
+  letter-spacing: 2px;
+  color: #e0e0e0;
+  margin-top: 5px;
+  padding: 0 5px;
+  border-bottom: 1px solid rgba(255,255,255,0.2);
+  padding-bottom: 8px;
 }
-.bk-book .bk-cover .bk-title h1{
-  font: 800 4em "open sans";
+
+/* Номер издания (17th edition) слева */
+.mag-issue {
+  grid-row: 3;
+  justify-self: start;
+  margin-top: 25px;
+  color: #ffffff;
+}
+.mag-issue h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 4.5em;
+  font-weight: 700;
+  line-height: 0.8em;
+}
+.mag-issue p {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 1.6em;
+  margin-top: -5px;
+}
+
+/* Звёздочка / Блеск справа */
+.mag-badge {
+  grid-row: 3;
+  justify-self: end;
+  margin-top: 25px;
+}
+.sparkle-icon {
+  width: 55px;
+  height: 55px;
+  fill: #ffffff;
+  filter: drop-shadow(0 0 8px rgba(255,255,255,0.6));
+}
+
+/* Блок ICONIC AT EVERY ANGLE */
+.mag-promo {
+  grid-row: 4;
+  align-self: center;
+  color: #ffffff;
+  margin-top: 30px;
+}
+.mag-promo h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 3.5em;
+  font-weight: 400;
+  letter-spacing: 1px;
   line-height: 1em;
 }
-.bk-book .bk-cover .bk-title h2{
-  text-align: right;
-  font: 800 1em "open sans";
+.mag-promo p {
+  font-size: 0.9em;
+  letter-spacing: 3px;
+  font-weight: 300;
+  margin-top: 5px;
+  color: #cccccc;
 }
-.bk-book .bk-cover .bk-title h2.before{
-  text-align: left;
-  margin-left: 3px;
+
+/* Крупное имя внизу по центру */
+.mag-hero-name {
+  grid-row: 5;
+  font-family: 'Playfair Display', serif;
+  font-size: 5.5em;
+  font-weight: 400;
+  text-align: center;
+  color: #ffffff;
   line-height: 1em;
-}
-.highlight{
-  color: #ED5565;
+  letter-spacing: -1px;
+  margin-bottom: 20px;
 }
 
-.bk-book .bk-cover h3{
+/* Штрих-код в самом низу справа */
+.mag-barcode {
   position: absolute;
-  bottom: 15%;
-  left: 0;
-  text-align: center;
-  width: 100%;
-  font: 800 0.7em "open sans";
-  color: #fff;
-  text-transform: uppercase;
+  bottom: 15px;
+  right: 15px;
+  background: rgba(255, 255, 255, 0.85);
+  padding: 5px 8px;
+  border-radius: 2px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.barcode-lines {
+  width: 90px;
+  height: 25px;
+  /* Имитация полос штрихкода с помощью градиента */
+  background: repeating-linear-gradient(
+    90deg,
+    #000,
+    #000 2px,
+    #fff 2px,
+    #fff 4px,
+    #000 4px,
+    #000 5px,
+    #fff 5px,
+    #fff 8px
+  );
+}
+.barcode-text {
+  font-size: 7px;
+  color: #000;
+  font-family: monospace;
+  margin-top: 2px;
+  letter-spacing: 1px;
 }
 
-.bk-book .bk-content p {
-	font-family: Georgia, Times, "Times New Roman", serif;
-}
-
-.bk-book .bk-left h2 {
-	color: #fff;
-	font-size: 15px;
-	line-height: 40px;
-	padding-right: 10px;
-	text-align: right;
-}
-
-.bk-book .bk-back{
-  display: table;
-  overflow: hidden;
-}
-
-.bk-book .bk-back p {
-	color: #fff;
-	font-size: 0.9em;
-	padding: 40px;
-	text-align: center;
-	font-weight: 700;
-  position: absolute;
-  width: 100%;
-}
-
-.bk-book .bk-back h1{
-  font: 800 8em "open sans";
-  text-align: center;
-  height: 100%;
-  display: table-cell;
-  vertical-align: middle;
-}
-
-.bk-book .bk-page .color-square,
-.bk-book .bk-cover-back .color-square{  
-  display: table;
+/* ==========================================
+   СТИЛИ ВНУТРЕННИХ СТРАНИЦ
+   ========================================== */
+.page-content {
   width: 50%;
   height: 100%;
   float: left;
-  font: 800 8em "open sans";
+  background: #f7f5f0; /* Приятный книжный оттенок белого */
+  color: #222;
+  position: relative;
+}
+.left-page { border-right: 1px solid rgba(0,0,0,0.1); }
+.page-inner {
+  padding: 40px 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+}
+.page-inner h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.2em;
+  margin-bottom: 15px;
+  color: #111;
+}
+.page-inner p {
+  font-size: 1.1em;
+  line-height: 1.6em;
+  color: #444;
+}
+.page-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 2px;
+  box-shadow: inset 0 0 20px rgba(0,0,0,0.1);
+}
+
+/* Задняя обложка */
+.back-cover-content {
+  background: #1c1819;
   text-align: center;
-  color: #333;
+  width: 100%;
+  height: 100%;
+}
+.back-cover-content h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 3em;
+  color: #fff;
+  letter-spacing: 4px;
 }
 
-.bk-book .bk-page .color-square span,
-.bk-book .bk-cover-back .color-square span{
-  display: table-cell;
-  vertical-align: middle;
-}
-
-/* Colors */
-
-.background-color-ED5565{ background-color: #ED5565 }
-.color-ED5565{ color: #ED5565 }
-.background-color-DA4453{ background-color: #DA4453 }
-.color-DA4453{ color: #DA4453 }
-.background-color-FC6E51{ background-color: #FC6E51 }
-.color-FC6E51{ color: #FC6E51 }
-.background-color-E9573F{ background-color: #E9573F }
-.color-E9573F{ color: #E9573F }
-.background-color-FFCE54{ background-color: #FFCE54 }
-.color-FFCE54{ color: #FFCE54 }
-.background-color-FCBB42{ background-color: #FCBB42 }
-.color-FCBB42{ color: #FCBB42 }
-.background-color-A0D468{ background-color: #A0D468 }
-.color-A0D468{ color: #A0D468 }
-.background-color-8CC152{ background-color: #8CC152 }
-.color-8CC152{ color: #8CC152 }
-.background-color-48CFAD{ background-color: #48CFAD }
-.color-48CFAD{ color: #48CFAD }
-.background-color-37BC9B{ background-color: #37BC9B }
-.color-37BC9B{ color: #37BC9B }
-.background-color-4FC1E9{ background-color: #4FC1E9 }
-.color-4FC1E9{ color: #4FC1E9 }
-.background-color-3BAFDA{ background-color: #3BAFDA }
-.color-3BAFDA{ color: #3BAFDA }
-.background-color-5D9CEC{ background-color: #5D9CEC }
-.color-5D9CEC{ color: #5D9CEC }
-.background-color-4A89DC{ background-color: #4A89DC }
-.color-4A89DC{ color: #4A89DC }
-.background-color-AC92EC{ background-color: #AC92EC }
-.color-AC92EC{ color: #AC92EC }
-.background-color-967ADC{ background-color: #967ADC }
-.color-967ADC{ color: #967ADC }
-.background-color-EC87C0{ background-color: #EC87C0 }
-.color-EC87C0{ color: #EC87C0 }
-.background-color-D770AD{ background-color: #D770AD }
-.color-D770AD{ color: #D770AD }
-.background-color-AAB2BD{ background-color: #AAB2BD }
-.color-AAB2BD{ color: #AAB2BD }
-.background-color-656D78{ background-color: #656D78 }
-.color-656D78{ color: #656D78 }
-
-/* Fallbacks */
-
-.no-csstransforms3d .bk-book > div,
-.no-csstransforms3d .bk-book .bk-cover-back {
-	display: none;
-}
-
-.no-csstransforms3d .bk-book > div.bk-front {
-	display: block;
-}
-
-.no-csstransforms3d .bk-info button,
-.no-js .bk-info button {
-	display: none;
-}
-
-@media (max-width: 700px) { 
-  body{
-    font-size: 50%;
-  }
-  
-  .bk-book .bk-cover .bk-title div {
-    width: 184px;
-  }
-}
-
-@media (max-width: 430px) { 
-  body{
-    font-size: 35%;
-  }
-  
-  .bk-book .bk-cover .bk-title div {
-    width: 128px;
-  }
-}
+/* ==========================================
+   КОД ПЛАГИНА BOOKBLOCK (НЕ ТРОГАЕМ)
+   ========================================== */
 .bb-bookblock {
   width: 200%;
   height: 100%;
@@ -509,19 +490,7 @@ a {
   transform-origin: left center;
 }
 
-.bb-horizontal .bb-page {
-  width: 100%;
-  height: 50%;
-  top: 50%;
-  -webkit-transform-origin: center top;
-  -moz-transform-origin: center top;
-  transform-origin: center top;
-}
-
-.bb-page > div,
-.bb-outer,
-.bb-content,
-.bb-inner {
+.bb-page > div, .bb-outer, .bb-content, .bb-inner {
   position: absolute;
   height: 100%;
   width: 100%;
@@ -535,13 +504,7 @@ a {
   backface-visibility: hidden;
 }
 
-.bb-vertical .bb-content {
-  width: 200%;
-}
-
-.bb-horizontal .bb-content {
-  height: 200%;
-}
+.bb-vertical .bb-content { width: 200%; }
 
 .bb-page > div {
   width: 100%;
@@ -562,20 +525,13 @@ a {
   transform: rotateY(-180deg);
 }
 
-.bb-horizontal .bb-back {
-  -webkit-transform: rotateX(-180deg);
-  -moz-transform: rotateX(-180deg);
-  transform: rotateX(-180deg);
-}
-
 .bb-outer {
   width: 100%;
   overflow: hidden;
   z-index: 999;
 }
 
-.bb-overlay, 
-.bb-flipoverlay {
+.bb-overlay, .bb-flipoverlay {
   background-color: rgba(0, 0, 0, 0.7);
   position: absolute;
   top: 0px;
@@ -584,12 +540,7 @@ a {
   height: 100%;
   opacity: 0;
 }
-
-.bb-flipoverlay {
-  background-color: rgba(0, 0, 0, 0.2);
-}
-
-/* */
+.bb-flipoverlay { background-color: rgba(0, 0, 0, 0.2); }
 
 .bb-bookblock.bb-vertical > div.bb-page:first-child,
 .bb-bookblock.bb-vertical > div.bb-page:first-child .bb-back {
@@ -598,23 +549,9 @@ a {
   transform: rotateY(180deg);
 }
 
-.bb-bookblock.bb-horizontal > div.bb-page:first-child,
-.bb-bookblock.bb-horizontal > div.bb-page:first-child .bb-back {
-  -webkit-transform: rotateX(180deg);
-  -moz-transform: rotateX(180deg);
-  transform: rotateX(180deg);
-}
+.bb-vertical .bb-front .bb-content { left: -100%; }
 
-/* Content display */
-.bb-vertical .bb-front .bb-content {
-  left: -100%;
-}
-
-.bb-horizontal .bb-front .bb-content {
-  top: -100%;
-}
-
-/* Flipping classes */
+/* Flipping */
 .bb-vertical .bb-flip-next,
 .bb-vertical .bb-flip-initial {
   -webkit-transform: rotateY(-180deg);
@@ -626,19 +563,6 @@ a {
   -webkit-transform: rotateY(0deg);
   -moz-transform: rotateY(0deg);
   transform: rotateY(0deg);
-}
-
-.bb-horizontal .bb-flip-next,
-.bb-horizontal .bb-flip-initial {
-  -webkit-transform: rotateX(180deg);
-  -moz-transform: rotateX(180deg);
-  transform: rotateX(180deg);
-}
-
-.bb-horizontal .bb-flip-prev {
-  -webkit-transform: rotateX(0deg);
-  -moz-transform: rotateX(0deg);
-  transform: rotateX(0deg);
 }
 
 .bb-vertical .bb-flip-next-end {
@@ -653,18 +577,6 @@ a {
   transform: rotateY(-165deg);
 }
 
-.bb-horizontal .bb-flip-next-end {
-  -webkit-transform: rotateX(15deg);
-  -moz-transform: rotateX(15deg);
-  transform: rotateX(15deg);
-}
-
-.bb-horizontal .bb-flip-prev-end {
-  -webkit-transform: rotateX(165deg);
-  -moz-transform: rotateX(165deg);
-  transform: rotateX(165deg);
-}
-
 .bb-item {
   width: 100%;
   height: 100%;
@@ -674,14 +586,11 @@ a {
   display: none;
 }
 
-/* No JS */
-.no-js .bb-bookblock, 
-.no-js ul.bb-custom-grid li {
-  width: auto;
-  height: auto;
-}
-
-.no-js .bb-item {
-  display: block;
-  position: relative;
+/* Адаптивность шрифтов под мелкие экраны */
+@media (max-width: 768px) { 
+  .magazine-grid { padding: 15px; }
+  .mag-main-title { font-size: 3.2em; }
+  .mag-hero-name { font-size: 3.8em; }
+  .mag-issue h2 { font-size: 3em; }
+  .mag-promo h2 { font-size: 2.2em; }
 }
